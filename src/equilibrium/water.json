@@ -10,7 +10,7 @@
             "UpperBound"           : "16", 
             "UpperBoundType"       : "int",           
             "ObjectType"           : "equilibrium_ph",
-            "LineStyle"            : "k--"
+            "LineStyle"            : "k:"
         },
         {
             "Name"                 : "H2O_H2",
@@ -21,7 +21,7 @@
             "UpperBound"           : "16", 
             "UpperBoundType"       : "int",
             "ObjectType"           : "equilibrium_ph",
-            "LineStyle"            : "g--"
+            "LineStyle"            : "k:"
         }
     ]
 }

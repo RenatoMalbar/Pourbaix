@@ -2,8 +2,9 @@ import json
 import os
 import matplotlib.pyplot as plt
 from equilibrium import *
+import equilibrium_func as eqF
 
-# ******** VARIAVEIS ENTRADA *********
+# ********* INPUT VARIABLES **********
 Conc_Fe3 = 1 #em M -> alterar para ppm
 Conc_Fe2 = 1 #em M -> alterar para ppm
 
@@ -11,35 +12,47 @@ pH = 7 #pH do sistema
 potencial = 0 #potencial redox do sistema
 # ************************************
 
+#LIST ALL AVAILABLE JSON FILES FOR EQUILIBRIUMS
 list_dir = os.listdir('src/equilibrium')
-print(list_dir)
+lst_avl_data = [x[:-5] for x in list_dir]
+print('Available Files:', lst_avl_data)
 
-#TEMPORÁRIO - INPUT DE FILE PARA CRIAR 
-temp_input = input('Choose File to Load: ')
-temp_input = temp_input + '.json'
-if temp_input in list_dir:
+#INPUT DE FILE PARA CRIAR 
+input_jsonFile = input('Choose File to Load: ')
+temp_input_json = input_jsonFile
+if temp_input_json in lst_avl_data:
     print('File exists.')
 else:
     print('File does not exist.')
+    exit()
+
+#memory release list_dir
+del list_dir
 
 #open json file
-f = open('src/equilibrium/{}'.format(temp_input))
+f = open('src/equilibrium/{}'.format(temp_input_json +'.json'))
 json_info = json.load(f)
+#clear memory of input
+del temp_input_json
 
 #CREATE DICTIONARY OF LOADED EQUILIBRIUM FILES
-filesDictionary = []
+filesDictionary = dict()
 
-#create a list of equilibriums for each file
-exec('{} = []'.format(json_info['Info']))
+#create list of equilibriums (class) 
+temp_eqList_loaded = eqF.read_equilibrium_json_file(json_info)
+
 #create an entry on a dictionary for the list of equilibriums for each file
-exec('{}.append("{}":{})'.format(filesDictionary, json_info['Info'], json_info['Info']))
+exec("{}['{}']={}".format('filesDictionary', json_info['Info'], "temp_eqList_loaded"))
+#clear memory of temp list o equilibriums
+del temp_eqList_loaded
 
-for i in range(0,len(json_info['Equilibrium'])):
-    exec('{}.append({}.from_json_object({}))'.format(json_info['Info'], json_info['Equilibrium'][i]['ObjectType'], json_info['Equilibrium'][i]))
-    
+
+#initialize data storage
 data = []
-for i in range(len(water)):
-    data.append(water[i].GetCurve(Conc_Fe2, Conc_Fe3))
-plt.plot(data[0][0], data[0][1],json_info['Equilibrium'][i]['LineStyle'])
-plt.plot(data[1][0], data[1][1],json_info['Equilibrium'][i]['LineStyle'])
+#generate data and plot
+for i in range(len(filesDictionary[input_jsonFile])):
+    curve = filesDictionary[input_jsonFile][i].GetCurve(Conc_Fe2, Conc_Fe3)
+    plt.plot(curve[0], curve[1], json_info['Equilibrium'][i]['LineStyle'])
+    data.append(curve)
+
 plt.show()
