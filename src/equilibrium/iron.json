@@ -1,0 +1,16 @@
+{
+    "Info":"iron",
+    "Equilibrium": [
+        {
+            "Name"                 : "Fe2_Fe0",
+            "Reaction"             : "4H+ + 4e- + O2 -> 2H2O",
+            "Equation"             : "1000*(1.223-0.0591*ph)+0*CFe2+0*CFe3",
+            "Variables"            : ["ph"],
+            "LowerBound"           : "-2",
+            "LowerBoundType"       : "int",
+            "UpperBound"           : "16", 
+            "UpperBoundType"       : "int",           
+            "ObjectType"           : "equilibrium_ph"
+        }
+    ]
+}

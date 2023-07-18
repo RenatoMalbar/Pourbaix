@@ -1,0 +1,27 @@
+{
+    "Info":"water",
+    "Equilibrium": [
+        {
+            "Name"                 : "O2_H2O",
+            "Reaction"             : "4H+ + 4e- + O2 -> 2H2O",
+            "Equation"             : "1000*(1.223-0.0591*ph)+0*CFe2+0*CFe3",
+            "LowerBound"           : "-2",
+            "LowerBoundType"       : "int",
+            "UpperBound"           : "16", 
+            "UpperBoundType"       : "int",           
+            "ObjectType"           : "equilibrium_ph",
+            "LineStyle"            : "k--"
+        },
+        {
+            "Name"                 : "H2O_H2",
+            "Reaction"             : "2H2O + 2e- -> H2 + 2OH-",
+            "Equation"             : "1000*(-0.0591*ph)+0*CFe2+0*CFe3",
+            "LowerBound"           : "-2",
+            "LowerBoundType"       : "int",
+            "UpperBound"           : "16", 
+            "UpperBoundType"       : "int",
+            "ObjectType"           : "equilibrium_ph",
+            "LineStyle"            : "g--"
+        }
+    ]
+}
