@@ -1,0 +1,30 @@
+{
+    "water": 
+        {
+            "linestyle" : "dotted",
+            "linewidth" : "0.5",
+            "color" : "k"
+        },
+    
+    "solid-solid":
+        {
+            "linestyle" : "solid",
+            "linewidth" : "1.5",
+            "color" : "k"
+        },
+
+    "solid-liquid":
+        {
+            "linestyle" : "solid",
+            "linewidth" : "1.0",
+            "color" : "k"
+        },
+    
+    "liquid-liquid":
+        {
+            "linestyle" : "dashed",
+            "linewidth" : "1.0",
+            "color" : "k"
+        }
+
+}

@@ -1,16 +1,29 @@
 {
     "Info":"iron",
+    "MainVariables":["ph", "pot"],
+    "AuxVariables":["CFe2", "CFe3"],
     "Equilibrium": [
         {
             "Name"                 : "Fe2_Fe0",
-            "Reaction"             : "4H+ + 4e- + O2 -> 2H2O",
-            "Equation"             : "1000*(1.223-0.0591*ph)+0*CFe2+0*CFe3",
-            "Variables"            : ["ph"],
+            "Reaction"             : "Fe(II) + 2e -> Fe(s)",
+            "Equation"             : "-440+(59.2/2)*log(CFe2,10)",
             "LowerBound"           : "-2",
             "LowerBoundType"       : "int",
             "UpperBound"           : "16", 
             "UpperBoundType"       : "int",           
-            "ObjectType"           : "equilibrium_ph"
+            "ObjectType"           : "equilibrium_ph",
+            "EquilibriumType"      : "solid-liquid"
+        },
+        {
+            "Name"                 : "Fe3O4_Fe0",
+            "Reaction"             : "Fe3O4 + 8H+ + 8e -> 3Fe(s) + 3H2O ",
+            "Equation"             : "1000*(-0.085-0.0591*ph)",
+            "LowerBound"           : "-2",
+            "LowerBoundType"       : "int",
+            "UpperBound"           : "16", 
+            "UpperBoundType"       : "int",           
+            "ObjectType"           : "equilibrium_ph",
+            "EquilibriumType"      : "solid-liquid"
         }
     ]
 }
