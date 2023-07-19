@@ -39,7 +39,7 @@ del temp_input_json
 filesDictionary = dict()
 
 #create list of equilibriums (class) 
-temp_eqList_loaded = eqF.read_equilibrium_json_file(json_info, json_info["MainVariables"], json_info["AuxVariables"])
+temp_eqList_loaded = eqF.read_equilibrium_json_file(json_info, json_info["AuxVariables"])
 
 #create an entry on a dictionary for the list of equilibriums for each file
 exec("{}['{}']={}".format('filesDictionary', json_info['Info'], "temp_eqList_loaded"))
@@ -55,7 +55,9 @@ data = []
 #generate data and plot
 #plt.style.use('dark_background')
 for i in range(len(filesDictionary[input_jsonFile])):
-    curve = filesDictionary[input_jsonFile][i].GetCurve(Conc_Fe2, Conc_Fe3)
+    inpt_variables = eqF.create_equilibrium_variables(json_info["AuxVariables"])
+    print('Debug - Input Varibles:', inpt_variables)
+    curve = filesDictionary[input_jsonFile][i].GetCurve(inpt_variables)
 
     #LoadStyles
     styles = eqStyle[json_info['Equilibrium'][i]['EquilibriumType']]
@@ -63,4 +65,9 @@ for i in range(len(filesDictionary[input_jsonFile])):
     plt.plot(curve[0], curve[1], linestyle = styles['linestyle'], color = styles['color'], linewidth = styles['linewidth'])
     data.append(curve)
 
+#X AXIS
+plt.xlabel('pH')
+plt.xlim((-2,16))
+plt.ylabel('Potencial Redox [mV]')
+plt.tight_layout()
 plt.show()

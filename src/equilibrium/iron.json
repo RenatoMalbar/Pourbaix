@@ -7,8 +7,8 @@
             "Name"                 : "Fe2_Fe0",
             "Reaction"             : "Fe(II) + 2e -> Fe(s)",
             "Equation"             : "-440+(59.2/2)*log(CFe2,10)",
-            "LowerBound"           : "-2",
-            "LowerBoundType"       : "int",
+            "LowerBound"           : "Fe3O4_Fe0",
+            "LowerBoundType"       : "equilibrium_ph",
             "UpperBound"           : "16", 
             "UpperBoundType"       : "int",           
             "ObjectType"           : "equilibrium_ph",
@@ -23,7 +23,7 @@
             "UpperBound"           : "16", 
             "UpperBoundType"       : "int",           
             "ObjectType"           : "equilibrium_ph",
-            "EquilibriumType"      : "solid-liquid"
+            "EquilibriumType"      : "solid-solid"
         }
     ]
 }

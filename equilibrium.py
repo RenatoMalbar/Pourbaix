@@ -37,7 +37,7 @@ class equilibrium_ph(equilibrium_base):
     def __str__(self) -> str:
         return f"{self.descrp}"
     
-    def GetCurve(self, CFe2, CFe3):
+    def old_GetCurve(self, CFe2, CFe3):
         #initialize boundaries
         Boundaries = [[0,0],[0,0]]
         
@@ -59,29 +59,31 @@ class equilibrium_ph(equilibrium_base):
         
         return Boundaries
     
-    def new_GetCurve(self, CFe2, CFe3):
+    def GetCurve(self, input_variables):
         #initialize boundaries
         Boundaries = [[0,0],[0,0]]
 
         #set variables
         for var in self.variables:
-            x=1
+            print(var)
 
         #get boundaries
         #LOWER
         if self.LBoundType == 'int':
             Boundaries[0][0] = int(self.LBound)
             inpt_string  = ph=int(self.LBound)
-            Boundaries[1][0] = self.function_creator(ph=int(self.LBound), CFe2 = CFe2, CFe3 = CFe3)
+            Boundaries[1][0] = self.function_creator(ph=int(self.LBound))
+        elif self.LBoundType == 'equilibrium_ph':
+            return NotImplementedError
         else:
-            return NotImplemented
+            return NotImplementedError
 
         #UPPER
         if self.UBoundType == 'int':
             Boundaries[0][1] = int(self.UBound)
-            Boundaries[1][1] = self.function_creator(ph=int(self.UBound), CFe2 = CFe2, CFe3 = CFe3)
+            Boundaries[1][1] = self.function_creator(ph=int(self.UBound))
         else:
-            return NotImplemented
+            return NotImplementedError
         
         return Boundaries
 
