@@ -1,12 +1,19 @@
 import sympy as sy
 
 #BASE CLASS DESCRIBING THE EQUILIBRIUM OF TWO CHEM SPECIES  
-class equilibrium_base:
+class equilibrium:
 
-    def __init__(self, func, description, variables) -> None:
+    def __init__(self, func, description, variables, LowerBound, LBoundType, UpperBound, UBoundType, EquilibriumType) -> None:
         self.func = func
         self.descrp = description        
         self.variables = variables
+        self.LBound = LowerBound
+        self.LBoundType = LBoundType
+        self.UBound = UpperBound
+        self.UBoundType = UBoundType
+        self.EquilType = EquilibriumType
+        #initialize curve
+        self.Curve = [[0,0],[0,0]]
 
     def __repr__(self) -> str:
         return ('equilibrium_base({},{})'.format(self.func, self.descrp))
@@ -14,79 +21,68 @@ class equilibrium_base:
     def __str__(self) -> str:
         return f"{self.descrp}"
     
-    def function_creator(self, **kwargs):
+    def function_eval(self, **kwargs):
         func_sy = sy.sympify(self.func)
-        return func_sy.evalf(subs=kwargs)
-    
-#CLASS DESCRIBING THE EQUILIBRIUM OF TWO CHEM SPECIES - pH AS INDEPENDENT VARIABLE
-class equilibrium_ph(equilibrium_base):
-    def __init__(self, func, description, variables, LowerBound, LBoundType, UpperBound, UBoundType) -> None:
-        super().__init__(func, description, variables)
-        self.LBound = LowerBound
-        self.LBoundType = LBoundType
-        self.UBound = UpperBound
-        self.UBoundType = UBoundType
+        result = func_sy.evalf(subs=kwargs)
+        return result
     
     @classmethod
-    def from_json_object(cls, dic, variables):
-        return (cls(dic['Equation'], dic['Reaction'], variables, dic['LowerBound'], dic['LowerBoundType'], dic['UpperBound'], dic['UpperBoundType']))
+    def from_json_object(cls, dict, variables):
+        return (cls(dict['Equation'], dict['Reaction'], variables, dict['LowerBound'], dict['LowerBoundType'], dict['UpperBound'], dict['UpperBoundType'], dict['ObjectType'] ))
     
     def __repr__(self) -> str:
         return ("equilibrium_ph('{}', '{}', {}, {}, {}, {})".format(self.func, self.descrp, self.LBound, self.LBoundType, self.UBound, self.UBoundType))
     
     def __str__(self) -> str:
         return f"{self.descrp}"
-    
-    def old_GetCurve(self, CFe2, CFe3):
-        #initialize boundaries
-        Boundaries = [[0,0],[0,0]]
-        
-        #get boundaries
-        #LOWER
-        if self.LBoundType == 'int':
-            Boundaries[0][0] = int(self.LBound)
-            inpt_string  = ph=int(self.LBound)
-            Boundaries[1][0] = self.function_creator(ph=int(self.LBound), CFe2 = CFe2, CFe3 = CFe3)
-        else:
-            return NotImplemented
 
-        #UPPER
-        if self.UBoundType == 'int':
-            Boundaries[0][1] = int(self.UBound)
-            Boundaries[1][1] = self.function_creator(ph=int(self.UBound), CFe2 = CFe2, CFe3 = CFe3)
-        else:
-            return NotImplemented
+    def getBounds(self, BoundType, Bound, inpt_variables):
+        #inicialize vector
+        bounds = [0,0]        
+
+        #BOUND TYPE FLOAT
+        if BoundType == 'float':
+            bounds[0]= float(Bound)
+            bounds[1] = self.function_eval(ph=int(Bound))
         
-        return Boundaries
+        #BOUND TYPE EQUILIBRIUM_PH
+        elif BoundType == 'equilibrium_ph':
+            bounds[0] = float(-2)
+
+            #check if variables are set and create input for function_eval
+            funcEval_input = dict()
+            funcEval_input['ph'] = bounds[0]
+            for var in self.variables:
+                if var in inpt_variables:
+                    funcEval_input[var] = inpt_variables[var]
+                else:
+                    print(var, 'is missing from input.')
+
+            bounds[1] = self.func_eval_from_string(funcEval_input)
+            #print('Debug - bounds:', bounds)
+        elif BoundType == 'equilibrium_pot':
+            return NotImplemented
+        else:
+            return NotImplemented        
     
+        return bounds
+
     def GetCurve(self, input_variables):
-        #initialize boundaries
-        Boundaries = [[0,0],[0,0]]
-
-        #set variables
-        for var in self.variables:
-            print(var)
-
-        #get boundaries
-        #LOWER
-        if self.LBoundType == 'int':
-            Boundaries[0][0] = int(self.LBound)
-            inpt_string  = ph=int(self.LBound)
-            Boundaries[1][0] = self.function_creator(ph=int(self.LBound))
-        elif self.LBoundType == 'equilibrium_ph':
-            return NotImplementedError
-        else:
-            return NotImplementedError
-
-        #UPPER
-        if self.UBoundType == 'int':
-            Boundaries[0][1] = int(self.UBound)
-            Boundaries[1][1] = self.function_creator(ph=int(self.UBound))
-        else:
-            return NotImplementedError
+        # **************** EQUILIBRIUM_PH ****************    
+        if self.EquilType == 'equilibrium_ph':            
+            #get boundaries
+            #LOWER
+            self.Curve[0][0], self.Curve[1][0] = self.getBounds(self.LBoundType, self.LBound, input_variables)
+            
+            #UPPER
+            self.Curve[0][1], self.Curve[1][1] = self.getBounds(self.UBoundType, self.UBound, input_variables)
         
-        return Boundaries
+            return self.Curve
 
-    
-#CLASS DESCRIBING THE EQUILIBRIUM OF TWO CHEM SPECIES - REDUCTION POTENCIAL AS INDEPENDENT VARIABLE
+        else:
+            return NotImplemented
 
+    def func_eval_from_string(self, input_str):        
+        result = self.function_eval(**input_str)
+        #print('Debug - input_str, result:', input_str, result)
+        return result

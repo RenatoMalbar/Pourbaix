@@ -1,7 +1,7 @@
 import json
 import os
 import matplotlib.pyplot as plt
-from equilibrium import *
+from Equilibrium import *
 import equilibrium_func as eqF
 
 # ********* INPUT VARIABLES **********
@@ -52,16 +52,15 @@ eqStyle = json.load(f)
 
 #initialize data storage
 data = []
+inpt_variables = eqF.create_equilibrium_variables(json_info["AuxVariables"])
 #generate data and plot
 #plt.style.use('dark_background')
 for i in range(len(filesDictionary[input_jsonFile])):
-    inpt_variables = eqF.create_equilibrium_variables(json_info["AuxVariables"])
-    print('Debug - Input Varibles:', inpt_variables)
     curve = filesDictionary[input_jsonFile][i].GetCurve(inpt_variables)
 
     #LoadStyles
     styles = eqStyle[json_info['Equilibrium'][i]['EquilibriumType']]
-
+    print('Debug - Curve:',curve)
     plt.plot(curve[0], curve[1], linestyle = styles['linestyle'], color = styles['color'], linewidth = styles['linewidth'])
     data.append(curve)
 

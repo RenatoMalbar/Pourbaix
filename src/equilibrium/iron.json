@@ -10,7 +10,7 @@
             "LowerBound"           : "Fe3O4_Fe0",
             "LowerBoundType"       : "equilibrium_ph",
             "UpperBound"           : "16", 
-            "UpperBoundType"       : "int",           
+            "UpperBoundType"       : "equilibrium_ph",           
             "ObjectType"           : "equilibrium_ph",
             "EquilibriumType"      : "solid-liquid"
         },
@@ -19,9 +19,9 @@
             "Reaction"             : "Fe3O4 + 8H+ + 8e -> 3Fe(s) + 3H2O ",
             "Equation"             : "1000*(-0.085-0.0591*ph)",
             "LowerBound"           : "-2",
-            "LowerBoundType"       : "int",
+            "LowerBoundType"       : "float",
             "UpperBound"           : "16", 
-            "UpperBoundType"       : "int",           
+            "UpperBoundType"       : "float",           
             "ObjectType"           : "equilibrium_ph",
             "EquilibriumType"      : "solid-solid"
         }

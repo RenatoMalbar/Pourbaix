@@ -1,4 +1,4 @@
-from equilibrium import *
+from Equilibrium import equilibrium
 
 def read_equilibrium_json_file(dict, aVariables):
     #merge variables files
@@ -7,11 +7,11 @@ def read_equilibrium_json_file(dict, aVariables):
     lst = []
     #Create all equilibrium objects from json file
     for i in range(0,len(dict['Equilibrium'])):
-        exec('{}.append({}.from_json_object({},{}))'.format('lst', dict['Equilibrium'][i]['ObjectType'], dict['Equilibrium'][i], variables))
+        eq = equilibrium.from_json_object(dict['Equilibrium'][i], variables)
+        lst.append(eq)
         #(lst.append(Class.from_json_object(Equilibrium)))
     
     return lst
-
 
 def create_equilibrium_variables(neededVars):
 
