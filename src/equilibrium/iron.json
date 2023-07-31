@@ -7,23 +7,56 @@
             "Name"                 : "Fe2_Fe0",
             "Reaction"             : "Fe(II) + 2e -> Fe(s)",
             "Equation"             : "-440+(59.2/2)*log(CFe2,10)",
-            "LowerBound"           : "Fe3O4_Fe0",
-            "LowerBoundType"       : "equilibrium_ph",
-            "UpperBound"           : "16", 
+            "LowerBound"           : "-2",
+            "LowerBoundType"       : "float",
+            "UpperBound"           : "Fe3O4_Fe0", 
             "UpperBoundType"       : "equilibrium_ph",           
             "ObjectType"           : "equilibrium_ph",
             "EquilibriumType"      : "solid-liquid"
         },
         {
             "Name"                 : "Fe3O4_Fe0",
-            "Reaction"             : "Fe3O4 + 8H+ + 8e -> 3Fe(s) + 3H2O ",
+            "Reaction"             : "Fe3O4 + 8H+ + 8e -> 3Fe(s) + 3H2O",
             "Equation"             : "1000*(-0.085-0.0591*ph)",
-            "LowerBound"           : "-2",
-            "LowerBoundType"       : "float",
+            "LowerBound"           : "Fe2_Fe0",
+            "LowerBoundType"       : "equilibrium_ph",
             "UpperBound"           : "16", 
             "UpperBoundType"       : "float",           
             "ObjectType"           : "equilibrium_ph",
             "EquilibriumType"      : "solid-solid"
+        },
+        {
+            "Name"                 : "Fe2O2_Fe3O4",
+            "Reaction"             : "2Fe2O3 + 2H+ + 2e -> 2Fe3O4 + H2O",
+            "Equation"             : "1000*(0.221-0.0591*ph)",
+            "LowerBound"           : "Fe2_Fe3O4",
+            "LowerBoundType"       : "equilibrium_ph",
+            "UpperBound"           : "16", 
+            "UpperBoundType"       : "float",           
+            "ObjectType"           : "equilibrium_ph",
+            "EquilibriumType"      : "solid-solid"
+        },
+        {
+            "Name"                 : "Fe2_Fe3O4",
+            "Reaction"             : "Fe3O4 + 8H+ + 2e -> 3Fe(II) + 4H2O",
+            "Equation"             : "1000*(0.980-0.2364*ph-0.0886*log(CFe2,10))",
+            "LowerBound"           : "Fe2O2_Fe3O4",
+            "LowerBoundType"       : "equilibrium_ph",
+            "UpperBound"           : "Fe3O4_Fe0", 
+            "UpperBoundType"       : "equilibrium_ph",           
+            "ObjectType"           : "equilibrium_ph",
+            "EquilibriumType"      : "solid-liquid"
+        },
+        {
+            "Name"                 : "Fe2O3_Fe2",
+            "Reaction"             : "Fe2o3 + 6H+ + 2e -> 2Fe(II) + 3H2O",
+            "Equation"             : "(1000*(0.728-0.1773*ph-0.0591*log(CFe2,10)))",
+            "LowerBound"           : "-2",
+            "LowerBoundType"       : "float",
+            "UpperBound"           : "Fe2O2_Fe3O4", 
+            "UpperBoundType"       : "equilibrium_ph",           
+            "ObjectType"           : "equilibrium_ph",
+            "EquilibriumType"      : "solid-liquid"
         }
     ]
 }
